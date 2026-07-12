@@ -1,1 +1,21 @@
+name: gk2_app
+description: Geographical Knowledge for Kids
+version: 1.0.0+1
 
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  audioplayers: ^5.2.1
+  lottie: ^3.1.0
+  flutter_earth_globe: ^0.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
