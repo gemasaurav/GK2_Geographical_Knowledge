@@ -6,7 +6,7 @@
     <title>(GK)²: Geographical Knowledge for Kids</title>
     <style>
         :root { --neon: #00f2ff; --glass: rgba(255, 255, 255, 0.15); }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Roboto, sans-serif; background: #000; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Arial, sans-serif; background: #000; color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
 
         /* BACKGROUNDS */
         #globe-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle, #001d3d, #000); }
@@ -33,31 +33,34 @@
         .card { background: var(--glass); backdrop-filter: blur(25px); border-radius: 20px; padding: 30px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1); }
         
         .header-section { display: flex; align-items: center; gap: 25px; margin-bottom: 25px; }
-        .flag-small { width: 120px; border: 2px solid #fff; border-radius: 5px; }
+        .flag-small { width: 120px; border: 2px solid #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .stat-box { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; border-bottom: 3px solid var(--neon); }
         .stat-box small { color: var(--neon); font-size: 0.75rem; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 5px; }
 
-        .map-img { width: 100%; border-radius: 10px; margin: 15px 0; border: 1px solid #555; }
-        .world-pos { width: 100%; max-width: 400px; border-radius: 10px; background: white; padding: 10px; }
+        .map-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .map-item { background: #fff; padding: 10px; border-radius: 10px; text-align: center; color: #000; }
+        .map-item img { width: 100%; height: auto; max-height: 250px; object-fit: contain; }
+        .map-item span { font-size: 0.8rem; font-weight: bold; display: block; margin-top: 5px; }
 
         /* TOURIST SECTION */
         .tourist-list { display: grid; grid-template-columns: 1fr; gap: 30px; }
         .tourist-item { display: flex; gap: 20px; align-items: flex-start; }
-        .tourist-item img { width: 250px; height: 180px; object-fit: cover; border-radius: 10px; border: 1px solid var(--neon); flex-shrink: 0; }
-        .tourist-info h4 { margin: 0 0 10px 0; color: var(--neon); }
-        .tourist-info p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: #ddd; }
+        .tourist-item img { width: 220px; height: 150px; object-fit: cover; border-radius: 10px; border: 1px solid var(--neon); flex-shrink: 0; }
+        .tourist-info h4 { margin: 0 0 8px 0; color: var(--neon); font-size: 1.2rem; }
+        .tourist-info p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: #eee; }
 
         select { width: 100%; padding: 15px; background: #111; color: #fff; border: 1px solid var(--neon); border-radius: 10px; font-size: 1.1rem; margin-bottom: 30px; cursor: pointer; }
-        .back-nav { cursor: pointer; color: var(--neon); margin-bottom: 20px; display: inline-block; font-weight: bold; }
+        .back-nav { cursor: pointer; color: var(--neon); margin-bottom: 20px; display: inline-block; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
         footer { text-align: center; padding: 50px; border-top: 1px solid #222; font-size: 0.9rem; color: #888; }
         footer strong { color: var(--neon); }
 
         @media (max-width: 768px) {
             .tourist-item { flex-direction: column; }
-            .tourist-item img { width: 100%; }
+            .tourist-item img { width: 100%; height: 200px; }
+            .map-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -79,7 +82,7 @@
 
     <!-- 2. SELECTION -->
     <div id="selection-menu" class="screen">
-        <h2 style="margin-bottom: 40px;">Choose Your Destination</h2>
+        <h2 style="margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px;">Select Your Destination</h2>
         <div>
             <div class="choice-card" onclick="loadContent('india')">
                 <h1 style="margin:0">🇮🇳</h1>
@@ -89,7 +92,7 @@
             <div class="choice-card" onclick="loadContent('world')">
                 <h1 style="margin:0">🌍</h1>
                 <h3>World Nations</h3>
-                <p>50+ Countries Database</p>
+                <p>Global Country Database</p>
             </div>
         </div>
     </div>
@@ -114,12 +117,12 @@
         const db = {
             india: {
                 name: "India (Bharat)", capital: "New Delhi", continent: "Asia", pm: "Narendra Modi", president: "Droupadi Murmu", animal: "Royal Bengal Tiger", bird: "Indian Peacock",
-                flag: "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/320px-Flag_of_India.svg.png",
+                flag: "https://flagcdn.com/w320/in.png",
                 map: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/India_map_en.svg/600px-India_map_en.svg.png",
                 pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/India_on_the_globe_%28India_centered%29.svg/400px-India_on_the_globe_%28India_centered%29.svg.png",
                 famous: "India is globally celebrated for its immense cultural diversity, being the birthplace of Yoga, and the world's largest democracy. It is famous for its 5,000-year-old heritage, the majestic Himalayan ranges, and its world-leading software and space industries. From the vibrant spices of the south to the spiritual ghats of the north, India is a land where ancient traditions meet modern technology.",
-                provinces: "28 States and 8 Union Territories including Maharashtra, Kerala, and Rajasthan.",
-                districts: "Over 780 Districts including Kutch (Largest), Thane (Most Populous), and Leh.",
+                provinces: "28 States and 8 Union Territories including Maharashtra, Kerala, Rajasthan, and Uttar Pradesh.",
+                districts: "Over 780 Districts including Kutch (Largest), Thane (Most Populous), Leh, Pune, and Ahmedabad.",
                 tourist: [
                     { name: "The Taj Mahal, Agra", img: "https://images.unsplash.com/photo-1564507592333-c60657451dd7?w=400&h=300&fit=crop", gist: "This ivory-white marble mausoleum is one of the Seven Wonders of the World and a symbol of eternal love. Built by Mughal Emperor Shah Jahan, it is world-famous for its perfect symmetry and intricate gemstone carvings. It stands on the banks of the Yamuna river and attracts millions of global tourists every year." },
                     { name: "Golden Temple, Amritsar", img: "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=400&h=300&fit=crop", gist: "Known as Sri Harmandir Sahib, it is the holiest shrine in Sikhism and famous for its stunning gold-covered exterior. The temple is surrounded by a large man-made pool and is known for its community kitchen (Langar) that serves free food to thousands daily. It represents equality and spiritual peace for people of all religions." },
@@ -130,8 +133,8 @@
             },
             usa: {
                 name: "United States of America", capital: "Washington D.C.", continent: "North America", pm: "N/A", president: "Joe Biden", animal: "American Bison", bird: "Bald Eagle",
-                flag: "https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/320px-Flag_of_the_United_States.svg.png",
-                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/USA_Location_Map.svg/600px-USA_Location_Map.svg.png",
+                flag: "https://flagcdn.com/w320/us.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Map_of_USA_with_state_names.svg/600px-Map_of_USA_with_state_names.svg.png",
                 pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/USA_Location_Map.svg/400px-USA_Location_Map.svg.png",
                 famous: "The USA is a global superpower famous for its leadership in technology, economics, and entertainment through Hollywood and Silicon Valley. It is known for its vast geographic diversity, featuring everything from the snowy peaks of Alaska to the tropical beaches of Florida. The country is a melting pot of cultures and a pioneer in democratic values and space exploration.",
                 tourist: [
@@ -141,11 +144,120 @@
                     { name: "Disney World, Florida", img: "https://images.unsplash.com/photo-1502444330042-d1a1ddf9bb5c?w=400&h=300&fit=crop", gist: "The world's most visited entertainment resort, Disney World is famous for its magical theme parks, luxury hotels, and iconic Cinderella Castle. It offers a unique world of fantasy for kids and adults alike, featuring characters from classic Disney and Marvel movies. It is a massive complex that operates like its own self-contained city." },
                     { name: "Golden Gate Bridge", img: "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?w=400&h=300&fit=crop", gist: "Spanning the San Francisco Bay, this orange-colored suspension bridge is an engineering marvel and the most photographed bridge in the world. It is famous for its Art Deco styling and the way its towers disappear into the thick Pacific fog. It serves as the iconic gateway to the city of San Francisco and Northern California." }
                 ]
+            },
+            australia: {
+                name: "Australia", capital: "Canberra", continent: "Oceania", pm: "Anthony Albanese", president: "King Charles III (Monarch)", animal: "Red Kangaroo", bird: "Emu",
+                flag: "https://flagcdn.com/w320/au.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Australia_location_map.svg/600px-Australia_location_map.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Australia-Location_Map_%282013%29.svg/400px-Australia-Location_Map_%282013%29.svg.png",
+                famous: "Australia is world-famous for its unique wildlife like kangaroos and koalas, the massive Outback desert, and the Great Barrier Reef. It is the world's smallest continent and one of the largest countries, known for its high quality of life and laid-back surfing culture. Australia is also a global leader in mining, agriculture, and world-class educational institutions.",
+                tourist: [
+                    { name: "Sydney Opera House", img: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?w=400&h=300&fit=crop", gist: "This performing arts center is one of the 20th century's most iconic buildings, famous for its unique sail-like shell design. Located on Sydney Harbour, it hosts over 1,500 performances annually and is a UNESCO World Heritage site. It is the definitive symbol of modern Australia and its vibrant artistic culture." },
+                    { name: "Great Barrier Reef", img: "https://images.unsplash.com/photo-1582967788606-a171c1080cb0?w=400&h=300&fit=crop", gist: "The world's largest coral reef system is so big it can be seen from outer space. It is home to thousands of species of colorful fish, sharks, and turtles, making it a paradise for scuba divers. This natural wonder stretches over 2,300 kilometers off the coast of Queensland and is a vital part of Earth's ocean ecosystem." },
+                    { name: "Uluru (Ayers Rock)", img: "https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&h=300&fit=crop", gist: "Uluru is a massive sandstone monolith in the heart of the Northern Territory's arid Red Centre. It is sacred to indigenous Australians and famous for changing colors dramatically at sunrise and sunset. Standing 348 meters high, it is a powerful symbol of the ancient geological and cultural history of the Australian continent." },
+                    { name: "Bondi Beach", img: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=400&h=300&fit=crop", gist: "One of the most famous beaches in the world, Bondi is known for its golden sands, great surfing waves, and vibrant coastal lifestyle. It is a popular spot for both locals and tourists to enjoy the Australian sun and sea. The beach is also home to the iconic saltwater Icebergs pool, which sits right against the crashing ocean waves." },
+                    { name: "The Twelve Apostles", img: "https://images.unsplash.com/photo-1494233892892-885adb95b3b2?w=400&h=300&fit=crop", gist: "These limestone stacks off the shore of Port Campbell National Park are a highlight of the famous Great Ocean Road. They were formed by millions of years of erosion from the Southern Ocean, which carved them out of the mainland cliffs. Today, they stand as majestic pillars in the sea and are a testament to the power of nature." }
+                ]
+            },
+            japan: {
+                name: "Japan", capital: "Tokyo", continent: "Asia", pm: "Shigeru Ishiba", president: "Emperor Naruhito", animal: "Macaque", bird: "Green Pheasant",
+                flag: "https://flagcdn.com/w320/jp.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Japan_location_map_with_side_map.svg/600px-Japan_location_map_with_side_map.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Japan_on_the_globe_%28Japan_centered%29.svg/400px-Japan_on_the_globe_%28Japan_centered%29.svg.png",
+                famous: "Japan is a high-tech nation famous for its unique blend of ancient Samurai traditions and futuristic cities like Tokyo. It is a world leader in robotics, automotive engineering, and the home of global pop-culture icons like Anime, Manga, and Nintendo. Japan is also renowned for its breathtaking cherry blossoms, disciplined culture, and world-class food like Sushi and Ramen.",
+                tourist: [
+                    { name: "Mount Fuji", img: "https://images.unsplash.com/photo-1570690516157-a2d712740b7e?w=400&h=300&fit=crop", gist: "Mount Fuji is Japan's highest peak and an active stratovolcano that serves as a sacred symbol of the nation's beauty. Its near-perfect snowy cone is a UNESCO World Heritage site and has been a favorite subject for artists and photographers for centuries. Thousands of people climb it every summer to witness the spectacular sunrise from the peak." },
+                    { name: "Fushimi Inari Shrine", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=300&fit=crop", gist: "This famous Shinto shrine in Kyoto is known for its thousands of bright orange 'Torii' gates that form a tunnel up the mountain. It is dedicated to Inari, the god of rice and business, and features many fox statues which are believed to be messengers. The hike through the gates offers beautiful views of the ancient city of Kyoto." },
+                    { name: "Tokyo Skytree", img: "https://images.unsplash.com/photo-1540959733332-e94e270b4052?w=400&h=300&fit=crop", gist: "Standing at 634 meters, the Tokyo Skytree is one of the tallest structures in the world and a marvel of modern engineering. It serves as a television and radio broadcast tower and features two observation decks with stunning panoramic views of Tokyo. On clear days, visitors can even see Mount Fuji in the distance from the top deck." },
+                    { name: "Osaka Castle", img: "https://images.unsplash.com/photo-1590559899731-a382839e5549?w=400&h=300&fit=crop", gist: "This historic castle played a major role in the unification of Japan during the 16th century and is a masterpiece of Japanese architecture. It is surrounded by a massive moat and a park that is world-famous for its hundreds of cherry blossom trees in spring. The interior of the castle is now a museum that tells the story of its legendary history." },
+                    { name: "Nara Deer Park", img: "https://images.unsplash.com/photo-1549132986-39059a06492b?w=400&h=300&fit=crop", gist: "In the city of Nara, hundreds of wild Sika deer roam freely through the parks and around ancient temples. These deer are considered sacred and are very friendly, often bowing to tourists to ask for special deer crackers. It is a unique experience where nature and history coexist, right next to the world's largest bronze Buddha statue." }
+                ]
+            },
+            uk: {
+                name: "United Kingdom", capital: "London", continent: "Europe", pm: "Keir Starmer", president: "King Charles III (Monarch)", animal: "Lion", bird: "Robin",
+                flag: "https://flagcdn.com/w320/gb.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/United_Kingdom_location_map.svg/600px-United_Kingdom_location_map.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/United_Kingdom_on_the_globe_%28Europe_centered%29.svg/400px-United_Kingdom_on_the_globe_%28Europe_centered%29.svg.png",
+                famous: "The UK is a historic island nation famous for its Royal Family, the English language, and being the birthplace of the Industrial Revolution. It is composed of four countries: England, Scotland, Wales, and Northern Ireland, each with its own unique culture. The UK is globally respected for its top-tier universities like Oxford, its legendary music scene, and historic landmarks like Big Ben.",
+                tourist: [
+                    { name: "Big Ben & Parliament", img: "https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=400&h=300&fit=crop", gist: "The Elizabeth Tower, commonly known as Big Ben, is the world's most famous clock tower and an icon of London. It is part of the Palace of Westminster, which serves as the meeting place for the UK's government. The massive bell inside has chimed since 1859, symbolizing the stability and history of the British capital." },
+                    { name: "Stonehenge", img: "https://images.unsplash.com/photo-1599110906813-f98289895048?w=400&h=300&fit=crop", gist: "Stonehenge is a prehistoric monument in England consisting of a ring of massive standing stones, each around 13 feet high. Built over 4,500 years ago, its exact purpose remains a mystery, though many believe it was a solar calendar or a burial ground. It is a UNESCO World Heritage site and one of the most famous archaeological wonders in the world." },
+                    { name: "Edinburgh Castle", img: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=400&h=300&fit=crop", gist: "Dominating the skyline of Scotland's capital, this historic fortress sits atop an ancient volcanic rock called Castle Rock. It has served as a royal residence and a military stronghold for over 900 years. Today, it houses the Scottish Crown Jewels and the Stone of Destiny, attracting millions of visitors to explore its medieval towers and cannons." },
+                    { name: "The Tower of London", img: "https://images.unsplash.com/photo-1585641460592-124b8686d182?w=400&h=300&fit=crop", gist: "This historic castle on the north bank of the River Thames is famous for being a palace, a prison, and the home of the UK's Crown Jewels. It was founded in 1066 by William the Conqueror and has played a central role in English history for a millennium. Guarded by the famous Yeoman Warders (Beefeaters), it is a fascinating place of royal history and dark legends." },
+                    { name: "Giant's Causeway", img: "https://images.unsplash.com/photo-1546708973-b339540b5162?w=400&h=300&fit=crop", gist: "Located on the coast of Northern Ireland, this geological wonder consists of 40,000 interlocking basalt columns formed by an ancient volcanic eruption. The columns are so perfectly hexagonal that ancient legends claimed they were built by a giant named Finn MacCool. It is a breathtaking natural landscape and a must-visit destination in the UK." }
+                ]
+            },
+            france: {
+                name: "France", capital: "Paris", continent: "Europe", pm: "Michel Barnier", president: "Emmanuel Macron", animal: "Gallic Rooster", bird: "N/A",
+                flag: "https://flagcdn.com/w320/fr.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/France_location_map-Regions_2016.svg/600px-France_location_map-Regions_2016.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/France_Location_Map.svg/400px-France_Location_Map.svg.png",
+                famous: "France is internationally famous as the world's most visited country and the global capital of fashion, perfume, and fine arts. It is known for its romantic culture, historic chateaus, and world-class culinary heritage including croissants, cheese, and pastries. France is also a major leader in European space technology and the aerospace industry with the Airbus headquarters.",
+                tourist: [
+                    { name: "The Eiffel Tower", img: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=400&h=300&fit=crop", gist: "Originally built for the 1889 World's Fair, this iron lattice tower is the definitive symbol of Paris and France. It was once the tallest man-made structure in the world and offers stunning 360-degree views of the City of Light. Every night, it sparkles with thousands of lights, making it the most romantic landmark on Earth." },
+                    { name: "Louvre Museum", img: "https://images.unsplash.com/photo-1544413647-ad540958611f?w=400&h=300&fit=crop", gist: "The Louvre is the world's largest art museum and a historic monument in the heart of Paris. It houses over 35,000 masterpieces, including the famous Mona Lisa and the Venus de Milo. Its iconic glass pyramid entrance is a modern contrast to the historic royal palace that forms the museum's halls." },
+                    { name: "Palace of Versailles", img: "https://images.unsplash.com/photo-1524397057410-1e775ed476f3?w=400&h=300&fit=crop", gist: "Versailles was the principal royal residence of France from 1682 until the French Revolution. It is world-famous for its Hall of Mirrors, opulent royal apartments, and its massive, perfectly manicured gardens. The palace represents the height of French absolute monarchy and the extreme luxury of the French royal court." },
+                    { name: "Mont Saint-Michel", img: "https://images.unsplash.com/photo-1533154683836-84ea7a0bc310?w=400&h=300&fit=crop", gist: "This stunning island abbey in Normandy is one of the most magical sights in France. It is built on a rocky island that is cut off from the mainland at high tide, creating a fortress-like appearance. Its narrow medieval streets and the beautiful Gothic abbey at the summit make it look like a place from a fairytale." },
+                    { name: "The French Riviera", img: "https://images.unsplash.com/photo-1534430480872-3498386e7a56?w=400&h=300&fit=crop", gist: "Also known as the Côte d'Azur, this is the glamorous Mediterranean coast of southeastern France. It is famous for its bright blue waters, luxury yachts, and world-renowned cities like Nice, Cannes, and St. Tropez. It is a favorite holiday destination for the global rich and famous, known for its sunshine and beautiful beaches." }
+                ]
+            },
+            china: {
+                name: "China", capital: "Beijing", continent: "Asia", pm: "Li Qiang", president: "Xi Jinping", animal: "Giant Panda", bird: "Red-crowned Crane",
+                flag: "https://flagcdn.com/w320/cn.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/China_location_map.svg/600px-China_location_map.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/China_location_map.svg/400px-China_location_map.svg.png",
+                famous: "China is one of the world's oldest civilizations and the global leader in manufacturing and exports. It is famous for its ancient inventions like paper, gunpowder, and the compass, as well as its massive modern infrastructure. China is also known for its diverse landscapes, its influential food culture, and being the home of the Giant Panda.",
+                tourist: [
+                    { name: "The Great Wall", img: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=400&h=300&fit=crop", gist: "The Great Wall is a series of fortifications stretching over 21,000 kilometers across northern China. It was built over 2,000 years to protect the Chinese empire from invasions. It is the longest man-made structure in the world and a UNESCO World Heritage site, visible even in many satellite photos." },
+                    { name: "The Forbidden City", img: "https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=400&h=300&fit=crop", gist: "Located in the heart of Beijing, the Forbidden City was the Chinese imperial palace for almost 500 years. It consists of 980 buildings and is a masterpiece of traditional Chinese palatial architecture. Today, it is a museum housing thousands of artifacts from the Ming and Qing dynasties." },
+                    { name: "Terracotta Army", img: "https://images.unsplash.com/photo-1627914845018-0504f216264d?w=400&h=300&fit=crop", gist: "In Xi'an, thousands of life-sized clay soldiers, horses, and chariots stand in battle formation inside a massive underground tomb. These were built to protect the first Emperor of China in the afterlife. Every soldier has a unique face, making it one of the most incredible archaeological discoveries ever made." },
+                    { name: "The Bund, Shanghai", img: "https://images.unsplash.com/photo-1474181487882-5abf3f0ba6c2?w=400&h=300&fit=crop", gist: "The Bund is a famous waterfront area in Shanghai that features a stunning contrast between historic European-style buildings and futuristic skyscrapers across the river. It is the definitive symbol of China's economic rise and modern development. Walking along the Bund at night offers a spectacular view of the city's neon-lit skyline." },
+                    { name: "Li River, Guilin", img: "https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=400&h=300&fit=crop", gist: "The Li River is world-famous for its dramatic karst mountains that rise vertically out of the mist-covered water. This ethereal landscape has inspired Chinese painters and poets for centuries and is even featured on the 20 Yuan banknote. Floating down the river on a bamboo raft is a peaceful way to see China's natural beauty." }
+                ]
+            },
+            germany: {
+                name: "Germany", capital: "Berlin", continent: "Europe", pm: "Olaf Scholz", president: "Frank-Walter Steinmeier", animal: "Federal Eagle", bird: "N/A",
+                flag: "https://flagcdn.com/w320/de.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Germany_location_map.svg/600px-Germany_location_map.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Germany_on_the_globe_%28Europe_centered%29.svg/400px-Germany_on_the_globe_%28Europe_centered%29.svg.png",
+                famous: "Germany is a global economic powerhouse famous for its world-class engineering, luxury cars like BMW and Mercedes, and high-quality manufacturing. It is known for its historic fairy-tale castles, the Black Forest, and being the birthplace of famous scientists like Albert Einstein. Germany is also celebrated for its cultural events like Oktoberfest and its legendary bread and sausages.",
+                tourist: [
+                    { name: "Neuschwanstein Castle", img: "https://images.unsplash.com/photo-1594132176082-90146e279402?w=400&h=300&fit=crop", gist: "This stunning castle in the Bavarian Alps was the inspiration for Disney's Sleeping Beauty Castle. It was built by King Ludwig II in the 19th century as a private retreat and is a masterpiece of Romanesque Revival architecture. Its dramatic hilltop location makes it one of the most photographed castles in the world." },
+                    { name: "Brandenburg Gate", img: "https://images.unsplash.com/photo-1560969184-10fe8719e047?w=400&h=300&fit=crop", gist: "Located in Berlin, this 18th-century neoclassical monument is a symbol of German unity and history. It once stood in the 'no-man's land' between East and West Berlin during the Cold War. Today, it is a magnificent landmark where people gather for major celebrations and historical commemorations." },
+                    { name: "Cologne Cathedral", img: "https://images.unsplash.com/photo-1549918864-48ac978761a4?w=400&h=300&fit=crop", gist: "This massive Gothic cathedral is a UNESCO World Heritage site and took over 600 years to complete. Its two 157-meter towers dominate the skyline of the city of Cologne and it is one of the most visited landmarks in Germany. It houses the Shrine of the Three Kings and features incredible medieval stained glass windows." },
+                    { name: "The Black Forest", img: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=400&h=300&fit=crop", gist: "The Black Forest is a large forested mountain range in southwest Germany, famous for its dense evergreen woods and charming villages. It is the home of the cuckoo clock and the delicious Black Forest cake. With its mist-covered valleys and waterfalls, it feels like the setting of a Brothers Grimm fairytale." },
+                    { name: "The Berlin Wall Memorial", img: "https://images.unsplash.com/photo-1524331135803-247079930f7e?w=400&h=300&fit=crop", gist: "This memorial site commemorates the division of Berlin by the Wall from 1961 to 1989. It includes a preserved section of the actual wall and the 'death strip' that stood between East and West. It is a powerful place of reflection on human freedom and the struggle for German reunification." }
+                ]
+            },
+            canada: {
+                name: "Canada", capital: "Ottawa", continent: "North America", pm: "Justin Trudeau", president: "King Charles III (Monarch)", animal: "Beaver", bird: "Canada Jay",
+                flag: "https://flagcdn.com/w320/ca.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Canada_location_map.svg/600px-Canada_location_map.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Canada_on_the_globe_%28North_America_centered%29.svg/400px-Canada_on_the_globe_%28North_America_centered%29.svg.png",
+                famous: "Canada is the world's second-largest country, famous for its stunning natural landscapes, vast forests, and crystal-clear lakes. It is known for its friendly people, multicultural society, and being a world leader in environmental protection and human rights. Canada is also globally recognized for its love of ice hockey and its delicious maple syrup.",
+                tourist: [
+                    { name: "Niagara Falls", img: "https://images.unsplash.com/photo-1501705388883-4ed8a543392c?w=400&h=300&fit=crop", gist: "Niagara Falls is a group of three massive waterfalls on the border between Canada and the USA. The Canadian side, called Horseshoe Falls, is the largest and offer the most spectacular views. Millions of visitors come to see the sheer power of the water and take boat tours to the base of the thundering falls." },
+                    { name: "Banff National Park", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=300&fit=crop", gist: "Located in the heart of the Canadian Rockies, Banff is famous for its turquoise glacial lakes and snow-capped peaks. Lake Louise is its most iconic spot, known for its mirror-like water and stunning mountain reflections. It is a paradise for hikers, skiers, and wildlife lovers who want to see bears and elk in their natural habitat." },
+                    { name: "CN Tower, Toronto", img: "https://images.unsplash.com/photo-1552074284-5e88ef1aef18?w=400&h=300&fit=crop", gist: "The CN Tower was once the world's tallest freestanding structure and is the defining landmark of Toronto's skyline. It features high-speed elevators that take visitors to observation decks with floor-to-ceiling glass windows. Adventurous tourists can even do the 'EdgeWalk,' walking hands-free on a ledge 116 stories above the ground." },
+                    { name: "Quebec City Old Town", img: "https://images.unsplash.com/photo-1533446001091-6677461c3bc5?w=400&h=300&fit=crop", gist: "Old Quebec is a UNESCO World Heritage site and the only fortified city in North America north of Mexico. Its cobblestone streets, stone buildings, and European charm make it feel like a piece of France in Canada. The towering Château Frontenac hotel is the city's most iconic landmark, overlooking the Saint Lawrence River." },
+                    { name: "Hopewell Rocks", img: "https://images.unsplash.com/photo-1510651296013-68f760f9e17b?w=400&h=300&fit=crop", gist: "Located in the Bay of Fundy, these unique 'flowerpot' rock formations were carved by the world's highest tides over thousands of years. At low tide, visitors can walk on the ocean floor around the massive rock pillars. When the tide comes in, the water rises so high that people can kayak around the tops of the same rocks." }
+                ]
+            },
+            brazil: {
+                name: "Brazil", capital: "Brasilia", continent: "South America", pm: "N/A", president: "Luiz Inácio Lula da Silva", animal: "Jaguar", bird: "Rufous-bellied Thrush",
+                flag: "https://flagcdn.com/w320/br.png",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Brazil_location_map.svg/600px-Brazil_location_map.svg.png",
+                pos: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Brazil_on_the_globe_%28South_America_centered%29.svg/400px-Brazil_on_the_globe_%28South_America_centered%29.svg.png",
+                famous: "Brazil is the largest country in South America and famous for its vibrant Rio Carnival, world-class football, and the massive Amazon Rainforest. It is known for its beautiful beaches, diverse wildlife, and being the world's top producer of coffee. Brazil is a land of music and dance, where the Samba and Bossa Nova rhythms are a part of everyday life.",
+                tourist: [
+                    { name: "Christ the Redeemer", img: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=400&h=300&fit=crop", gist: "Standing atop Mount Corcovado, this 30-meter-tall statue of Jesus is the definitive symbol of Rio de Janeiro and Brazil. It is one of the New Seven Wonders of the World and offers a breathtaking view of the city's mountains and harbor. It represents the welcoming spirit and deep religious roots of the Brazilian people." },
+                    { name: "Iguazu Falls", img: "https://images.unsplash.com/photo-1618359402517-8178125191d9?w=400&h=300&fit=crop", gist: "Iguazu consists of 275 individual waterfalls on the border between Brazil and Argentina, making it the largest waterfall system in the world. The falls are surrounded by a lush subtropical rainforest home to rare birds and butterflies. The roar of the water and the permanent rainbows in the mist make it a truly unforgettable sight." },
+                    { name: "Amazon Rainforest", img: "https://images.unsplash.com/photo-1544330042-2d000a50f0dc?w=400&h=300&fit=crop", gist: "The Amazon is the world's largest tropical rainforest and the 'lungs of our planet,' producing 20% of Earth's oxygen. It is home to millions of species of plants, insects, and animals, many of which are found nowhere else on Earth. Boat tours on the Amazon River allow tourists to see pink dolphins, jaguars, and incredible exotic birds." },
+                    { name: "Sugarloaf Mountain", img: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=400&h=300&fit=crop", gist: "Sugarloaf is a massive granite peak that rises 396 meters above the harbor of Rio de Janeiro. It is famous for its glass-walled cable car system that takes visitors to the summit for a 360-degree view of the city. From the top, you can see the famous Copacabana beach and the Christ the Redeemer statue in the distance." },
+                    { name: "Copacabana Beach", img: "https://images.unsplash.com/photo-1591136450014-a95e0c65597b?w=400&h=300&fit=crop", gist: "Copacabana is one of the world's most famous beaches, known for its 4-kilometer crescent of white sand and the iconic black-and-white wave-patterned promenade. It is a hub of activity where locals play football and volleyball all day long. The beach is especially famous for its massive New Year's Eve party, one of the biggest on Earth." }
+                ]
             }
         };
-
-        // Populate 48 more basic entries for the list
-        const countryList = ["Afghanistan", "Australia", "Brazil", "Canada", "China", "Egypt", "France", "Germany", "Italy", "Japan", "Mexico", "Russia", "South Africa", "United Kingdom", "Argentina", "Saudi Arabia", "Turkey", "South Korea", "Spain", "Indonesia", "Nigeria", "Thailand", "Vietnam", "Pakistan", "Iran", "Iraq", "Israel", "Norway", "Sweden", "Switzerland", "Greece", "Portugal", "Singapore", "Malaysia", "New Zealand", "Netherlands", "Belgium", "Denmark", "Finland", "Poland", "Ukraine", "Ireland", "Chile", "Peru", "Colombia", "Kenya", "Ethiopia", "UAE"];
 
         function openMenu() {
             sound.play();
@@ -168,18 +280,15 @@
                 selector.innerHTML = "";
                 render(db.india, true);
             } else {
-                let opts = `<option value="">-- Choose a Nation (50 available) --</option>`;
+                let opts = `<option value="">-- Explore Nations (Batch 1: Countries 1-10) --</option>`;
                 opts += Object.keys(db).filter(k=>k!='india').map(k=>`<option value="${k}">${db[k].name}</option>`).join('');
-                countryList.forEach(c => opts += `<option value="gen">${c}</option>`);
-                selector.innerHTML = `<select onchange="handleSelect(this.value, this.options[this.selectedIndex].text)">${opts}</select>`;
-                display.innerHTML = `<div class="card" style="text-align:center"><h3>Explore the world from the menu above!</h3></div>`;
+                selector.innerHTML = `<select onchange="handleSelect(this.value)">${opts}</select>`;
+                display.innerHTML = `<div class="card" style="text-align:center"><h3>Select a country from the menu to start your journey!</h3></div>`;
             }
         }
 
-        function handleSelect(val, name) {
-            if(val === 'gen') {
-                document.getElementById('content-display').innerHTML = `<div class="card"><h3>${name}</h3><p>Full educational details for ${name} are being added to the database. Currently showing basic profile.</p></div>`;
-            } else if(val) render(db[val], false);
+        function handleSelect(val) {
+            if(val) render(db[val], false);
         }
 
         function render(data, isIndia) {
@@ -203,15 +312,15 @@
                     <div class="stats-grid">
                         <div class="stat-box"><small>Capital</small>${data.capital}</div>
                         <div class="stat-box"><small>Continent</small>${data.continent}</div>
-                        <div class="stat-box"><small>PM</small>${data.pm}</div>
+                        <div class="stat-box"><small>Prime Minister</small>${data.pm}</div>
                         <div class="stat-box"><small>President</small>${data.president}</div>
                         <div class="stat-box"><small>National Animal</small>${data.animal}</div>
                         <div class="stat-box"><small>National Bird</small>${data.bird}</div>
                     </div>
                     <h3>Geographical Maps</h3>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                        <div><small>Political Map Photograph</small><img src="${data.map}" class="map-img"></div>
-                        <div><small>Position in World Map</small><img src="${data.pos}" class="map-img" style="background:white; padding:10px;"></div>
+                    <div class="map-container">
+                        <div class="map-item"><img src="${data.map}"><span>Political / Outline Map</span></div>
+                        <div class="map-item"><img src="${data.pos}"><span>Global Position Map</span></div>
                     </div>
                 </div>
 
@@ -222,13 +331,13 @@
 
                 ${isIndia ? `
                 <div class="card">
-                    <h3>Administration</h3>
-                    <p><b>Provinces:</b> ${data.provinces}</p>
+                    <h3>Administrative Structure</h3>
+                    <p><b>Provinces (States):</b> ${data.provinces}</p>
                     <p><b>Districts:</b> ${data.districts}</p>
                 </div>` : ''}
 
                 <div class="card">
-                    <h3>Top 5 Tourist Destinations</h3>
+                    <h3>Top 5 Famous Tourist Places</h3>
                     <div class="tourist-list">${tHtml}</div>
                 </div>
             `;
