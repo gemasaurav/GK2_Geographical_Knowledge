@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GK)²: Geographical Knowledge for Kids</title>
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #000; color: white;
+            overflow-x: hidden;
+        }
+
+        /* 1. ROTATING GLOBE BACKGROUND */
+        #globe-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at center, #001d3d 0%, #000 100%);
+        }
+
+        .globe {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif');
+            background-size: cover; border-radius: 50%;
+            box-shadow: inset 0 0 50px #000, 0 0 30px rgba(0, 242, 255, 0.3);
+            opacity: 0.6;
+        }
+
+        /* 2. HOISTED INDIAN FLAG BACKGROUND (Hidden initially) */
+        #india-flag-bg {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.2;
+            background: url('https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png');
+            background-size: cover; background-position: center;
+        }
+
+        /* 3. INTERFACE ELEMENTS */
+        .screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+
+        h1 { font-size: 5rem; margin-bottom: 0; text-shadow: 0 0 20px var(--neon-blue); }
+        h1 span { font-size: 2.5rem; vertical-align: super; }
+
+        /* PLANE HOLOGRAM BUTTON */
+        .hologram-btn {
+            margin-top: 50px; cursor: pointer; transition: 0.3s;
+        }
+        .hologram-btn:hover { transform: scale(1.1) rotate(-5deg); }
+        .plane-icon { font-size: 100px; color: var(--neon-blue); filter: drop-shadow(0 0 15px var(--neon-blue)); }
+        .btn-label { display: block; border: 2px solid var(--neon-blue); padding: 10px 30px; border-radius: 30px; margin-top: 15px; font-weight: bold; letter-spacing: 3px; background: rgba(0, 242, 255, 0.1); }
+
+        /* CONTENT STYLING */
+        #content-section { display: none; padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
+        .info-item { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border-bottom: 3px solid var(--neon-blue); }
+        
+        .photo-container { width: 100%; border-radius: 15px; overflow: hidden; margin: 15px 0; border: 2px solid var(--neon-blue); }
+        .photo-container img { width: 100%; height: auto; display: block; }
+
+        .back-btn { background: none; color: white; border: 1px solid white; padding: 10px 20px; cursor: pointer; margin-bottom: 20px; border-radius: 5px; }
+
+        footer { text-align: center; padding: 40px; font-size: 0.8rem; color: #aaa; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUNDS -->
+    <div id="globe-container"><div class="globe"></div></div>
+    <div id="india-flag-bg"></div>
+
+    <!-- AUDIO -->
+    <audio id="planeSound" src="https://www.soundjay.com/transportation/sounds/airplane-take-off-1.mp3"></audio>
+
+    <!-- HOME SCREEN -->
+    <div id="home-screen" class="screen">
+        <h1>(GK)<span>2</span></h1>
+        <p style="letter-spacing: 5px; color: #00f2ff;">GEOGRAPHICAL KNOWLEDGE FOR KIDS</p>
+
+        <div class="hologram-btn" onclick="enterApp()">
+            <div class="plane-icon">✈</div>
+            <span class="btn-label">ENTER</span>
+        </div>
+    </div>
+
+    <!-- CONTENT SCREEN -->
+    <div id="content-section">
+        <button class="back-btn" onclick="goHome()">← BACK TO GLOBE</button>
+        
+        <!-- MAIN INDIA DETAILS -->
+        <div class="card">
+            <h1 style="font-size: 3rem; text-align: left;">INDIA 🇮🇳</h1>
+            <div class="info-grid">
+                <div class="info-item"><strong>Capital</strong><br>New Delhi</div>
+                <div class="info-item"><strong>Continent</strong><br>Asia</div>
+                <div class="info-item"><strong>Prime Minister</strong><br>Narendra Modi</div>
+                <div class="info-item"><strong>President</strong><br>Droupadi Murmu</div>
+                <div class="info-item"><strong>National Animal</strong><br>Royal Bengal Tiger</div>
+                <div class="info-item"><strong>National Bird</strong><br>Indian Peacock</div>
+            </div>
+            
+            <h3>World Position (Map)</h3>
+            <div class="photo-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/India_on_the_globe_%28India_centered%29.svg/800px-India_on_the_globe_%28India_centered%29.svg.png" alt="India Location">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Famous For</h3>
+            <p style="line-height: 1.6;">
+                India is a land of incredible diversity, famous for its ancient civilization that dates back over 5,000 years. 
+                It is globally recognized for being the birthplace of Yoga, Ayurveda, and major world religions like Hinduism and Buddhism. 
+                The country is celebrated for its vibrant festivals, world-class spices, and the legendary Bollywood film industry. 
+                From the majestic Himalayan peaks to the silicon hub of Bengaluru, India perfectly blends deep-rooted tradition with modern technology.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Tourist Places</h3>
+            
+            <h4 style="color: var(--neon-blue);">1. The Taj Mahal, Agra</h4>
+            <p>One of the Seven Wonders of the World, this stunning white marble mausoleum was built by Emperor Shah Jahan in 1632. It stands as a universal symbol of love and is famous for its intricate Persian and Mughal architecture. The monument is set within lush gardens and reflected in a grand pool, making it the most visited spot in India.</p>
+            <div class="photo-container"><img src="https://images.unsplash.com/photo-1564507592333-c60657451dd7?auto=format&fit=crop&w=1000&q=80" alt="Taj Mahal"></div>
+
+            <h4 style="color: var(--neon-blue); margin-top: 30px;">2. The Backwaters, Kerala</h4>
+            <p>Known as 'God's Own Country', the Kerala backwaters are a network of interconnected canals, rivers, and lakes parallel to the Arabian Sea. Tourists enjoy staying on traditional wooden houseboats that glide through the tranquil water surrounded by palm trees. It is a unique ecosystem famous for its peaceful atmosphere and the glimpse it provides into rural Indian life.</p>
+            <div class="photo-container"><img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1000&q=80" alt="Kerala"></div>
+        </div>
+
+        <div class="card">
+            <h3>Geography & Administration</h3>
+            <p><strong>States (Provinces):</strong> 28 States & 8 Union Territories</p>
+            <p><strong>Districts:</strong> Over 780 Districts (Including major ones like Kutch, Leh, Thane, and Ahmedabad)</p>
+        </div>
+
+        <footer>
+            <p>Concept given by: <strong>Kumar Gaurav</strong></p>
+            <p>Design & Developed by: <strong>100, 000 000 000</strong></p>
+        </footer>
+    </div>
+
+    <script>
+        const planeSound = document.getElementById('planeSound');
+        
+        function enterApp() {
+            // Play flying sound
+            planeSound.volume = 0.4;
+            planeSound.play();
+
+            // Transition UI
+            document.getElementById('home-screen').style.display = 'none';
+            document.getElementById('globe-container').style.display = 'none';
+            
+            document.getElementById('content-section').style.display = 'block';
+            document.getElementById('india-flag-bg').style.display = 'block';
+            
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            document.getElementById('home-screen').style.display = 'flex';
+            document.getElementById('globe-container').style.display = 'block';
+            
+            document.getElementById('content-section').style.display = 'none';
+            document.getElementById('india-flag-bg').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
